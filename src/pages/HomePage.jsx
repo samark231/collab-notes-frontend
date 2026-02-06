@@ -26,6 +26,9 @@ function HomePage() {
                 <section className='homepage-section section-list'>
                     <div className='list-header'>
                         <h3>All Entries</h3>
+                        <span>green:owner</span>
+                        <span>yellow:editor</span>
+                        <span>red:viewer</span>
                         <span className='entry-count'>{filteredJournals.length} entries</span>
                     </div>
                     

@@ -1,11 +1,9 @@
-/* index.css or App.css */
 body {
     margin: 0;
     padding: 0;
     box-sizing: border-box; /* Ensures padding doesn't break widths */
 }
 
-/* Optional: It's good practice to set this for everything */
 * {
     box-sizing: border-box;
 }

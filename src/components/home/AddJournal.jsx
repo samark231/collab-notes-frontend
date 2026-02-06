@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import useJournalStore from "../../store/JournalStore";
 import "../../styles/home/addJournal.css";
 import {useShallow} from "zustand/react/shallow";
 import { JOURNAL_MODE } from "../../utils/utils";
+import AddCollaborator from "../others/AddCollaborator";
+import useSocketStore from "../../store/socketStore";
+
 
 const AddJournal = () => {
-    const {isSavingJournal, currentMode,saveJournal, newJournalEntry, handleSaveNewJournalEntry,updateJournal,enterUpdateMode, handleCancel} = useJournalStore(
+    const {journals,isSavingJournal, currentMode,saveJournal, newJournalEntry, handleSaveNewJournalEntry,updateJournal,enterUpdateMode, handleCancel,currentJournalId} = useJournalStore(
         useShallow((state)=>({
+            journals:state.journals,
             newJournalEntry: state.newJournalEntry,
             handleSaveNewJournalEntry:state.handleSaveNewJournalEntry,
             saveJournal:state.saveJournal,
@@ -15,6 +19,7 @@ const AddJournal = () => {
             updateJournal:state.updateJournal,
             handleCancel: state.handleCancel,
             isSavingJournal:state.isSavingJournal,
+            currentJournalId:state.currentJournalId
         }))
     );
 
@@ -39,8 +44,50 @@ const AddJournal = () => {
     } else {
         saveJournal();
     }
-}
+    }
+    const { socket, connect, disconnect, joinNote, leaveNote, sendUpdate } = useSocketStore();
 
+    useEffect(() => { 
+        connect(); 
+        return () => disconnect(); 
+    }, []);
+
+    useEffect(() => {
+        if (currentJournalId) {
+            joinNote(currentJournalId);
+            if (socket) {
+                socket.on("receive_update", (data) => {
+                    useJournalStore.setState((state) => ({
+                        newJournalEntry: {
+                            title: data.title !== undefined ? data.title : state.newJournalEntry.title,
+                            content: data.content !== undefined ? data.content : state.newJournalEntry.content
+                        }
+                    }));
+                });
+            }
+        }
+        return () => {
+            if (currentJournalId && socket) {
+                leaveNote(currentJournalId);
+                socket.off("receive_update");
+            }
+        };
+    }, [currentJournalId, socket]);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        handleSaveNewJournalEntry(e);
+        if (currentJournalId) {
+            const updatedTitle = name === "title" ? value : newJournalEntry.title;
+            const updatedContent = name === "content" ? value : newJournalEntry.content;
+            sendUpdate(currentJournalId, updatedTitle, updatedContent);
+        }
+    };
+    
+    const activeNote = journals.find(n => n.id === currentJournalId);
+    
+    const isViewer = activeNote?.access_role === 'VIEWER';
+    const isOwner = activeNote?.access_role === 'OWNER';
+    const isEditor = activeNote?.access_role ==="EDITOR";
     return (
         <div className="aj-wrapper">
             <div className="aj-card">
@@ -52,9 +99,9 @@ const AddJournal = () => {
                         name="title"
                         placeholder="Untitled Entry"
                         value={newJournalEntry.title}
-                        onChange={handleSaveNewJournalEntry}
+                        onChange={handleInputChange}
                         autoComplete="off"
-                        readOnly={currentMode===JOURNAL_MODE.VIEW}
+                        readOnly={currentMode===JOURNAL_MODE.VIEW || isViewer}
                     />
                 </div>
 
@@ -64,8 +111,8 @@ const AddJournal = () => {
                         name="content"
                         placeholder="Start writing..."
                         value={newJournalEntry.content}
-                        onChange={handleSaveNewJournalEntry}
-                        readOnly={currentMode===JOURNAL_MODE.VIEW}
+                        onChange={handleInputChange}
+                        readOnly={currentMode===JOURNAL_MODE.VIEW|| isViewer}
                     />
                 </div>
 
@@ -83,10 +130,13 @@ const AddJournal = () => {
                         className={`aj-btn-save ${isSavingJournal ? 'loading' : ''}`}
                         type="button" 
                         onClick={handleButtonAction}
-                        disabled={isSavingJournal}
+                        disabled={isSavingJournal||isViewer}
                     >
                         {getButtonText()}
                     </button>
+                </div>
+                <div> {isOwner && 
+                    <AddCollaborator/>}
                 </div>
             </div>
         </div>

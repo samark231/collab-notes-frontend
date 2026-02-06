@@ -13,7 +13,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 function Header() {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const user = useAuthStore((state) => state.user);
-  console.log(user);
+  // console.log(user);
   const {backendStatus,handleHealthCheck} = useGeneralStore(useShallow(
         (state)=>({
             backendStatus: state.backendStatus,

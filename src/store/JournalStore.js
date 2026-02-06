@@ -22,13 +22,13 @@ const useJournalStore = create(
         getAllJournals: async ()=>{
             try{
                 const res = await api.get("/notes");
-                console.log(res.data.data);
+                // console.log(res.data.data);
                 set({journals:res.data.data});
                 set({filteredJournals:res.data.data});
                 // console.log("gettng all journals...",get().journals);
             }catch(err){
-                console.log("Error while fetching all journals", err);
-                toast.error("could not fetch all journals");
+                console.log("Error while fetching all notes", err);
+                toast.error("could not fetch all notes");
             }
         } ,
         saveJournal: async ()=>{
@@ -45,11 +45,12 @@ const useJournalStore = create(
                     title: "",
                     content: ""
                 }})
+                set({currentJournalId:null});
                 // console.log(get().journals);
                 return res.data.data;
 
             }catch(err){
-                console.log("Some error occured while saving the entry: ",err);
+                console.log("Some error occured while saving the note: ",err);
                 return null;
             }finally{
                 set({isSavingJournal:false});
@@ -65,14 +66,14 @@ const useJournalStore = create(
                 }))
                 toast.promise(deletePromise,{
                     loading:"deleting...",
-                    success:"Journal deleted successfully",
-                    error:"could not delete the journal",
+                    success:" note deleted successfully",
+                    error:"could not delete the note",
 
                 })
                 const res = await deletePromise;
                 // console.log(res.data.data);
             }catch(err){
-                console.log("Error occured while deleting the journal", err);
+                console.log("Error occured while deleting the note", err);
             }
         },
         handleUpdate: (entry)=>{
@@ -84,33 +85,43 @@ const useJournalStore = create(
                 content:entry.content
             }})
         },
-        updateJournal: async ()=>{
-            try{
-                set({isSavingJournal:true})
-                const res = await api.put(`/notes/${get().currentJournalId}`,get().newJournalEntry);
-                // console.log(res);
-                set((state)=>({
-                    journals: state.journals.map((entry)=>{
-                        return entry.id == get().currentJournalId?res.data.data:entry;
-                    }),
-                    filteredJournals: state.filteredJournals.map((entry)=>{
-                        return entry.id == get().currentJournalId?res.data.data:entry;
-                    })
-                }))
-                set({newJournalEntry:{
-                    title:"",
-                    content:""
-                }})
-                set({currentMode:JOURNAL_MODE.NEW});
-            }catch(err){
-                console.log("Error occured while updating the journal", err);
-                throw err;
-            }finally{
-                set({isSavingJournal:false});
+        updateJournal: async () => {
+            const { currentJournalId, newJournalEntry } = get();
+            try {
+                set({ isSavingJournal: true });
+                const res = await api.put(`/notes/${currentJournalId}`, newJournalEntry);
+                if (res.data.success) {
+                    const updatedNote = res.data.data;
+                    toast.success(res.data.message);
+                    set((state) => ({
+                        // Update the lists
+                        journals: state.journals.map((entry) => 
+                            entry.id === currentJournalId ? updatedNote : entry
+                        ),
+                        filteredJournals: state.filteredJournals.map((entry) => 
+                            entry.id === currentJournalId ? updatedNote : entry
+                        ),
+                        // Reset UI State
+                        newJournalEntry: { title: "", content: "" },
+                        currentMode: JOURNAL_MODE.NEW,
+                        currentJournalId: null
+                    }));
+
+                } else {
+                    throw new Error(res.data.message || "Update failed");
+                }
+
+            } catch (err) {
+                console.error("Error updating note:", err);
+                const msg = err.response?.data?.message || "Could not update. Permission denied?";
+                toast.error(msg);
+            } finally {
+                set({ isSavingJournal: false });
             }
         },
         handleView: (entry)=>{
             set({currentMode: JOURNAL_MODE.VIEW});
+            set({currentJournalId:entry.id});
             set({newJournalEntry: {
                 title: entry.title,
                 content: entry.content
@@ -125,20 +136,18 @@ const useJournalStore = create(
                 title: "",
                 content: ""
             }})
+            set({currentJournalId:null});
         },
         journalFilter: (query) => {
-            const { journals } = get(); // Get the master list
+            const { journals } = get();
 
             if (!query) {
             // If search is empty, reset display list to master list
             set({ filteredJournals: journals });
             } else {
-            // Lowercase for case-insensitive search
             const lowerQuery = query.toLowerCase();
 
             const filtered = journals.filter((item) => {
-                // Search in Title OR Content
-                // Add 'item.tags' logic here if you have tags
                 return (
                 item.title?.toLowerCase().includes(lowerQuery) ||
                 item.content?.toLowerCase().includes(lowerQuery)
@@ -153,6 +162,23 @@ const useJournalStore = create(
             set({journals:[]}),
             set({filteredJournals:[]});
             localStorage.removeItem("auth-storage");
+        },
+        addCollaborator: async (noteId, email, role) => {
+            try {
+                console.log("note id is",noteId);
+                console.log("rmail is",email);
+                console.log("role is",role);
+                const res = await api.post(`/notes/${noteId}/collaborators`, { email, role });
+                if (res.data.success) {
+                    toast.success("Collaborator added!");
+                    return true; 
+                }
+            } catch (err) {
+                console.error("Share Error:", err);
+                const msg = err.response?.data?.message || "Failed to add collaborator";
+                toast.error(msg);
+                return false; 
+            }
         },
     })
 );

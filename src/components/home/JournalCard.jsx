@@ -3,6 +3,7 @@ import {Visibility, Edit, DeleteForever, Archive} from '@mui/icons-material';
 import "../../styles/home/journalCard.css"
 import useJournalStore from '../../store/JournalStore';
 import { useShallow } from 'zustand/react/shallow';
+import useAuthStore from '../../store/authStore';
 
 function JournalCard({entry}) {
   const {handleView, handleUpdate, deleteJournal, updateJournal} = useJournalStore(useShallow((state)=>({
@@ -11,7 +12,7 @@ function JournalCard({entry}) {
     handleView: state.handleView,
     handleUpdate: state.handleUpdate
   })));  
-
+  const user = useAuthStore(state=>state.user);
   const handleDelete = ()=>{
     deleteJournal(entry.id);
   }
@@ -30,9 +31,16 @@ function JournalCard({entry}) {
           minute: '2-digit'
       });
   };
+  const isOwner = user?user.id === entry.owner_id:false;
+  const isEditor = entry.access_role==="EDITOR";
+  const isViewer = entry.access_role==="VIEWER";
 
   return (
     <div className='jc-container'>
+      <div 
+        className={`jc-dot ${isOwner? 'jc-dot-own' : isEditor?'jc-dot-edit':'jc-dot-view'}`}
+        title={isOwner? "Owner" : "Shared"}
+      ></div>
       <div className='jc-div jc-title'>{entry.title}</div>
       <div className='jc-div jc-date'>{formatDate(entry.created_at)}</div>
       <div className='jc-div jc-description'>{entry.content}</div>
@@ -40,15 +48,14 @@ function JournalCard({entry}) {
         <button className='jc-button jcb-view' onClick={()=>handleView(entry)}>
             <Visibility fontSize="small"/>
         </button>
+        {(isEditor||isOwner) &&
         <button className='jc-button jcb-edit'onClick={()=>handleUpdate(entry)}>
             <Edit fontSize="small"/>
-        </button>
+        </button>}
+        {isOwner &&
         <button className='jc-button jcb-delete' onClick={handleDelete}>
             <DeleteForever fontSize="small"/>
-        </button>
-        <button className='jc-button jcb-archive'>
-            <Archive fontSize="small"/>
-        </button>
+        </button>}
       </div>
     </div>
   )

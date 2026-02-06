@@ -78,3 +78,28 @@
 .jcb-edit:hover { color: #1976d2; }
 .jcb-view:hover { color: #2e7d32; }
 .jcb-archive:hover { color: #ed6c02; }
+
+/* Common styles for both dots */
+.jc-dot {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    z-index: 10;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+/* Specific Colors */
+.jc-dot-own {
+    background-color: #54e013; /* Red */
+}
+
+.jc-dot-edit{
+    background-color: #fffa63; /* Green */
+}
+
+.jc-dot-view{
+    background-color: #ff4d4d;; /* Green */
+}

@@ -144,3 +144,60 @@
         font-size: 1.75rem;
     }
 }
+
+/* addJournal.css */
+
+.aj-collab-section {
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.aj-collab-section h4 {
+    margin: 0 0 10px 0;
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.aj-collab-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.aj-collab-controls input {
+    flex: 2;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.aj-collab-controls select {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+}
+
+.aj-collab-controls button {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.aj-collab-controls button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.aj-btn-save.cancel {
+    background-color: #6c757d;
+    margin-right: 10px;
+}
