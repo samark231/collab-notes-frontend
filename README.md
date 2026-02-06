@@ -32,8 +32,8 @@ Create a `.env` file in the root of the frontend folder.
 # For Local Development:
 VITE_API_BASE_URL=http://localhost:5000/api
 
-# For Production (Render/Netlify):
-# VITE_API_BASE_URL=https://your-backend-app.onrender.com/api
+# For Production (render):
+# VITE_API_BASE_URL= https://collab-notes-backend-ocbc.onrender.com
 ```
 
 ### 3. Running the App
