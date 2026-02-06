@@ -1,0 +1,247 @@
+:root {
+    --header-height: 70px;
+    --header-bg: #ffffff;
+    --header-border: #e2e8f0;
+    --text-color: #2d3748;
+    --primary-color: #4a5568;
+}
+
+.header-container {
+    height: var(--header-height);
+    width: 100%;
+    background-color: var(--header-bg);
+    border-bottom: 1px solid var(--header-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem; /* Reduced padding slightly for better responsiveness */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-sizing: border-box;
+}
+
+/* --- Left: Brand --- */
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: max-content; /* Ensure logo doesn't squish */
+}
+
+.header-logo {
+    height: 48px; /* Adjusted slightly for proportion */
+    width: 48px;
+    object-fit: contain;
+}
+.header-logo:hover{
+    cursor: pointer;
+}
+
+.header-app-name {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-color);
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+}
+.header-app-name:hover{
+    cursor: pointer;
+}
+/* --- Center: Search Bar --- */
+.header-search {
+    flex: 1;
+    max-width: 500px;
+    margin: 0 2rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    color: #a0aec0;
+    font-size: 0.9rem;
+    z-index: 2;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 10px 10px 36px;
+    border-radius: 8px;
+    border: 1px solid #edf2f7;
+    background-color: #f7fafc; /* Subtle grey background */
+    color: var(--text-color);
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.search-input:focus {
+    background-color: #fff;
+    border-color: #cbd5e0;
+    box-shadow: 0 0 0 3px rgba(225, 79, 66, 0.1);
+}
+
+/* Mobile Search Trigger Button (Hidden on Desktop) */
+.mobile-search-trigger {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #718096;
+    font-size: 1.2rem;
+    padding: 8px;
+    cursor: pointer;
+}
+
+/* Close Button inside Search (Hidden on Desktop) */
+.mobile-search-close {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #e53e3e;
+    font-size: 1.2rem;
+    padding: 0 10px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+/* --- Right: Actions --- */
+.header-actions {
+    display: flex;
+    align-items: center;
+    /* Fluid gap: shrinks on smaller screens, grows on larger ones */
+    gap: clamp(0.5rem, 1.5vw, 1rem); 
+    min-width: max-content;
+    justify-content: flex-end;
+}
+
+.action-btn {
+    background: transparent;
+    border: none;
+    color: #718096;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.action-btn:hover {
+    background-color: #edf2f7;
+    color: #2d3748;
+}
+
+/* Vertical Line Divider */
+.header-divider {
+    height: 24px;
+    width: 1px;
+    background-color: #e2e8f0;
+    margin: 0 0.5rem;
+}
+
+/* User Profile Section */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.avatar {
+    height: 36px;
+    width: 36px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    user-select: none;
+    cursor: pointer;
+}
+
+.logout-btn {
+    background: transparent;
+    border: none;
+    color: #e53e3e;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+/* --- Status Animations --- */
+.status-btn.checking { color: #ecc94b; animation: pulse 1s infinite; }
+.status-btn.OK { color: #48bb78; }
+.status-btn.error { color: #f56565; }
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+
+/* --- Mobile Responsiveness --- */
+@media screen and (max-width: 768px) {
+    .header-container {
+        padding: 0 1rem;
+    }
+
+    /* 1. Hide App Name on Mobile */
+    .header-app-name {
+        display: none; 
+    }
+
+    /* 2. Search Logic */
+    /* By default on mobile, hide the actual input container */
+    .header-search {
+        display: none; 
+    }
+
+    /* Show the magnifying glass button instead */
+    .mobile-search-trigger {
+        display: block;
+        margin-left: auto; /* Push to right near actions */
+        margin-right: 10px;
+    }
+
+    /* --- ACTIVE SEARCH STATE --- */
+    /* When search is open: Show the search bar full width */
+    .header-search.mobile-active {
+        display: flex;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        animation: fadeIn 0.2s ease-in-out;
+    }
+
+    /* When search is open: Hide Brand and Actions to make room */
+    .hide-on-mobile {
+        display: none !important;
+    }
+
+    /* Show the close button only in mobile active state */
+    .mobile-search-close {
+        display: block;
+    }
+
+    /* Adjust padding for search input on mobile */
+    .header-search.mobile-active .search-input {
+        padding-right: 10px;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}

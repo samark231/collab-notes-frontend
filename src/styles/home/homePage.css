@@ -1,0 +1,124 @@
+/* Fix typo from original: container, not conatainer */
+.homePage-container {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; 
+    background-color: #f4f6f8;
+    /* border: 4px solid rgb(234, 255, 0); */
+}
+
+.homePage-main {
+    flex: 1; 
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+/* --- Left Side: Editor --- */
+.section-editor {
+    flex: 5; 
+    overflow-y: auto; 
+    border-right: 1px solid #e2e8f0;
+}
+
+/* Override AddJournal wrapper to fit context if needed */
+.section-editor .aj-wrapper {
+    min-height: auto; 
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* --- Right Side: List --- */
+.section-list {
+    flex: 5; 
+    background-color: #edf2f7; 
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; 
+    /* border: 2px solid brown; */
+}
+
+.list-header {
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #edf2f7;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    /* border: 2px solid green; */
+}
+
+.list-header h3 {
+    margin: 0;
+    color: #2d3748;
+    font-size: 1.2rem;
+}
+
+.entry-count {
+    background: #cbd5e0;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    color: #4a5568;
+    font-weight: bold;
+}
+
+/* The actual scrollable area for cards */
+.journal-grid {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 2rem 2rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); 
+    align-content: start;
+    gap: 1rem 1rem;
+    /* border: 2px solid blueviolet; */
+}
+
+.empty-state {
+    color: #a0aec0;
+    text-align: center;
+    margin-top: 3rem;
+    font-style: italic;
+}
+
+/* Custom Scrollbar for a polished look */
+.section-editor::-webkit-scrollbar,
+.journal-grid::-webkit-scrollbar {
+    width: 8px;
+}
+
+.section-editor::-webkit-scrollbar-track,
+.journal-grid::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.section-editor::-webkit-scrollbar-thumb,
+.journal-grid::-webkit-scrollbar-thumb {
+    background-color: #cbd5e0;
+    border-radius: 4px;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    .homePage-main {
+        flex-direction: column;
+        overflow-y: auto; /* On mobile, let the whole page scroll normally */
+    }
+
+    .section-editor, .section-list {
+        
+        flex: none; /* Reset flex ratios */
+        /* max-height: 400px; */
+        width: 100%;
+        border-right: none;
+        overflow: visible;
+    }
+    
+    .journal-grid {
+        overflow: visible; /* Disable internal scroll on mobile */
+    }
+}

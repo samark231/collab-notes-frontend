@@ -1,0 +1,24 @@
+/* index.css or App.css */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensures padding doesn't break widths */
+}
+
+/* Optional: It's good practice to set this for everything */
+* {
+    box-sizing: border-box;
+}
+.loading-page{
+    height: 100dvh;
+    width: 100dvw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+.lp-text{
+    font-size: x-large;
+    margin: 1rem;
+}

@@ -1,0 +1,80 @@
+.jc-container{
+    height: 12rem;
+    width: 10rem;
+
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    padding: 1rem;
+    border: none;
+    border-radius: 0.8rem;
+    box-shadow:0 4px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+.jc-container:hover{
+    background-color: #ccc;
+}
+.jc-container:hover  .jc-overlay{
+    opacity: 1;
+}
+.jc-title{
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.jc-date{
+    font-size: 0.75rem;
+    color: #888;
+}
+.jc-description{
+    font-size: 0.9rem;
+    color: #555;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+}
+.jc-overlay{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 10%;
+    /* padding: 5px; */
+    /* background-color: rgba(0,0,0,0.6); */
+    display: flex;
+    flex-direction: row;
+    justify-content: center ;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.jc-button{
+    background: none;
+    border: none;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #444;
+    transition: transform 0.2s, background-color 0.2s;
+}
+.jc-button:hover {
+    transform: scale(1.1);
+    background-color: #f0f0f0;
+}
+.jcb-delete:hover { color: #d32f2f; }
+.jcb-edit:hover { color: #1976d2; }
+.jcb-view:hover { color: #2e7d32; }
+.jcb-archive:hover { color: #ed6c02; }

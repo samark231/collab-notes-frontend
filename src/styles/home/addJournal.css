@@ -1,0 +1,146 @@
+/* Variables for easy theming */
+:root {
+    --aj-bg: #f4f6f8;
+    --aj-card-bg: #ffffff;
+    --aj-text-primary: #2d3748;
+    --aj-text-secondary: #718096;
+    --aj-accent: #4a5568; 
+    --aj-accent-hover: #2d3748;
+    --aj-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Centers the card on the screen */
+.aj-wrapper {
+    /* background-color: blue; */
+    min-height: 100%;
+    width: 100%;
+    background-color: var(--aj-bg);
+    display: flex;
+    justify-content: center;
+    padding-top: 2rem;
+    box-sizing: border-box;
+    /* border: 4px solid blue; */
+}
+
+/* The actual paper/card */
+.aj-card {
+    /* background-color: rgb(182, 23, 23); */
+    height: 85dvh;
+    width: 100%;
+    max-width: 700px; /* Looks like a standard paper width */
+    border-radius: 12px;
+    box-shadow: var(--aj-shadow);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 2rem 3rem;
+    box-sizing: border-box;
+}
+
+/* Header Area */
+.aj-header {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.aj-date {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--aj-text-secondary);
+    font-weight: 600;
+}
+
+.aj-input-title {
+    width: 100%;
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--aj-text-primary);
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 0;
+    font-family: inherit;
+}
+
+.aj-input-title::placeholder {
+    color: #cbd5e0;
+}
+
+/* Content Area */
+.aj-body {
+    flex-grow: 1; /*Takes up remaining space*/
+    /* max-height: 70%; */
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.aj-textarea-content {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    resize: none;
+    font-size: 1.1rem;
+    line-height: 1.7; /* Better readability */
+    color: var(--aj-text-primary);
+    font-family: inherit; /* Matches your app font */
+    background: transparent;
+}
+
+.aj-textarea-content::placeholder {
+    color: #a0aec0;
+    font-style: italic;
+}
+
+/* Footer / Button Area */
+.aj-footer {
+    /* background-color: red; */
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid #edf2f7;
+}
+
+.aj-btn-save {
+    background-color: var(--aj-accent);
+    color: white;
+    padding: 0.75rem 2rem;
+    margin: 0.5rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.cancel-button:hover{
+    background-color: red;
+}
+.aj-btn-save:hover:not(:disabled) {
+    background-color: var(--aj-accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+.aj-btn-save:disabled {
+    background-color: #cbd5e0;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .aj-card {
+        max-width: 95%;
+        height: 90vh;
+        padding: 1.5rem;
+    }
+    
+    .aj-input-title {
+        font-size: 1.75rem;
+    }
+}

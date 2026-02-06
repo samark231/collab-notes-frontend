@@ -1,0 +1,166 @@
+/* --- Overlay (The dark background) --- */
+.dropdown-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px); /* Slight blur behind the menu */
+    z-index: 998; /* Just below the sidebar */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.dropdown-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* --- Sidebar Container --- */
+.dropdown-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 320px;
+    background: #ffffff;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+    z-index: 999; /* Highest priority */
+    
+    /* Animation Logic */
+    transform: translateX(100%); /* Start hidden off-screen to right */
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); /* Smooth 'Apple-like' slide */
+    
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.dropdown-sidebar.active {
+    transform: translateX(0); /* Slide in */
+}
+
+/* --- Close Button --- */
+.sidebar-close-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #64748b;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.sidebar-close-btn:hover {
+    color: #1e293b;
+}
+
+/* --- Profile Section --- */
+.dropdown-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.dropdown-avatar-large {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #2f4f4f; /* Matches your Header Dark Green */
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 300;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.dropdown-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.user-name {
+    font-family: 'Georgia', serif; /* Matching your app's serif headers */
+    font-size: 1.5rem;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.user-email {
+    font-size: 0.9rem;
+    color: #94a3b8;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background-color: #e2e8f0;
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+/* --- Menu Links --- */
+.dropdown-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-grow: 1; /* Pushes footer to bottom */
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    color: #475569;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.menu-icon {
+    width: 20px;
+    color: #94a3b8;
+    transition: color 0.2s;
+}
+
+.menu-item:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    transform: translateX(5px); /* Subtle nudge effect */
+}
+
+.menu-item:hover .menu-icon {
+    color: #2f4f4f; /* Green accent on hover */
+}
+
+/* --- Logout Specifics --- */
+.logout-item {
+    color: #ef4444; /* Red color for logout */
+    margin-top: auto; /* Ensure it sticks to bottom if container flexes */
+}
+
+.logout-item:hover {
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+.logout-item .menu-icon {
+    color: #ef4444;
+}
