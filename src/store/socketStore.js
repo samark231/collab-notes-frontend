@@ -6,7 +6,7 @@ const useSocketStore = create((set, get) => ({
     isConnected: false,
 
     connect: () => {
-        const socket = io("http://localhost:5000"); // Backend URL
+        const socket = io(import.meta.env.VITE_API_BASE_URL); 
 
         socket.on("connect", () => {
             console.log("Connected to WebSocket");
