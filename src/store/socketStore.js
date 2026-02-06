@@ -6,10 +6,15 @@ const useSocketStore = create((set, get) => ({
     isConnected: false,
 
     connect: () => {
-        const socket = io(import.meta.env.VITE_API_BASE_URL); 
+        const apiURL = import.meta.env.VITE_API_BASE_URL; 
+        
+        const socketURL = apiURL?.replace("/api", "");
+        const socket = io(socketURL, {
+            withCredentials: true 
+        });
 
         socket.on("connect", () => {
-            console.log("Connected to WebSocket");
+            console.log("Connected to WebSocket:", socket.id);
             set({ isConnected: true });
         });
 

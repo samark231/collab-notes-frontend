@@ -5,7 +5,7 @@ import {useShallow} from "zustand/react/shallow";
 import { JOURNAL_MODE } from "../../utils/utils";
 import AddCollaborator from "../others/AddCollaborator";
 import useSocketStore from "../../store/socketStore";
-
+import useAuthStore from "../../store/authStore";
 
 const AddJournal = () => {
     const {journals,isSavingJournal, currentMode,saveJournal, newJournalEntry, handleSaveNewJournalEntry,updateJournal,enterUpdateMode, handleCancel,currentJournalId} = useJournalStore(
@@ -22,7 +22,7 @@ const AddJournal = () => {
             currentJournalId:state.currentJournalId
         }))
     );
-
+    const user = useAuthStore(state=>state.user);
     const today = new Date().toLocaleDateString('en-US', {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
@@ -83,11 +83,15 @@ const AddJournal = () => {
         }
     };
     
-    const activeNote = journals.find(n => n.id === currentJournalId);
+    
+   const activeNote = journals.find(n => n.id === currentJournalId);
     
     const isViewer = activeNote?.access_role === 'VIEWER';
-    const isOwner = activeNote?.access_role === 'OWNER';
-    const isEditor = activeNote?.access_role ==="EDITOR";
+    
+    //Fallback to ID check if access_role is missing (for new notes)
+    const isOwner = activeNote?.access_role === 'OWNER' || activeNote?.owner_id === user?.id;
+    
+    const isEditor = activeNote?.access_role === "EDITOR";
     return (
         <div className="aj-wrapper">
             <div className="aj-card">
