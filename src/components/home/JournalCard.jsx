@@ -10,7 +10,7 @@ function JournalCard({entry}) {
     deleteJournal: state.deleteJournal,
     updateJournal: state.updateJournal,
     handleView: state.handleView,
-    handleUpdate: state.handleUpdate
+    handleUpdate: state.handleUpdate,
   })));  
   const user = useAuthStore(state=>state.user);
   const handleDelete = ()=>{
@@ -31,9 +31,9 @@ function JournalCard({entry}) {
           minute: '2-digit'
       });
   };
-  const isOwner = user?user.id === entry.owner_id:false;
-  const isEditor = entry.access_role==="EDITOR";
-  const isViewer = entry.access_role==="VIEWER";
+    
+    const isOwner = entry?.access_role === 'OWNER' || entry?.owner_id === user?.id;
+    const isEditor = entry?.access_role === "EDITOR";
 
   return (
     <div className='jc-container'>
